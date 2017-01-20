@@ -1,8 +1,11 @@
 import numpy as np
-import gym
+#import gym
+import kagglegym
 
 import sys
 sys.path.insert(0, '../')
+sys.path.insert(0, '../rl')
+sys.path.insert(0, '../rl/agents')
 
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, merge
@@ -22,18 +25,16 @@ class PendulumProcessor(Processor):
 
 
 ENV_NAME = 'Pendulum-v0'
-gym.undo_logger_setup()
+##gym.undo_logger_setup()
 
 
 # Get the environment and extract the number of actions.
-env = gym.make(ENV_NAME)
+##env = gym.make(ENV_NAME)
+env = kagglegym.make()
 np.random.seed(123)
 env.seed(123)
-print env.action_space.shape
-print env.observation_space.shape
 print(env.reset())
-print(env.action_space.sample())
-print(env.step(env.action_space.sample()))
+#print(env.step(env.action_space.sample()))
 assert len(env.action_space.shape) == 1
 nb_actions = env.action_space.shape[0]
 
