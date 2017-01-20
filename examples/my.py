@@ -21,7 +21,7 @@ class PendulumProcessor(Processor):
     def process_reward(self, reward):
         # The magnitude of the reward can be important. Since each step yields a relatively
         # high reward, we reduce the magnitude by two orders.
-        return reward / 100.
+        return reward / 1.
 
 
 ENV_NAME = 'Pendulum-v0'
@@ -37,6 +37,9 @@ print(env.reset())
 #print(env.step(env.action_space.sample()))
 assert len(env.action_space.shape) == 1
 nb_actions = env.action_space.shape[0]
+
+y_low = -0.075
+y_high = 0.075
 
 # Build all necessary models: V, mu, and L networks.
 V_model = Sequential()

@@ -177,7 +177,7 @@ class Environment(object):
 
     def step(self, target):
         x = self.train.sample()
-        reward = 1/(self.x['y'] - target[0])**2
+        reward = -abs(self.x['y'] - target[0])
         self.x = x.iloc[0]
         return (x.iloc[0, :110].reset_index(drop=True), reward, False, {})
         timesplit = self.unique_timestamp[self.unique_idx-1]
