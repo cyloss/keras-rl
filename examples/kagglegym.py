@@ -72,6 +72,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics import r2_score
+from sklearn.preprocessing import MinMaxScaler
 
 
 def r_score(y_true, y_pred, sample_weight=None, multioutput=None):
@@ -145,6 +146,12 @@ class Environment(object):
             self.unique_idx = i
             self.train = fullset[fullset.timestamp < timesplit]
             self.test = fullset[fullset.timestamp >= timesplit]
+
+            d_mean= self.train.median(axis=0)
+            self.train = self.train.fillna(d_mean)
+            scaler = MinMaxScaler(feature_range=(0, 1))
+            self.train = pd.DataFrame(scaler.fit_transform(self.train), columns = self.train.columns, index = self.train.index)
+            print(self.train.head())
 
             # Needed to compute final score
             self.full = self.test.loc[:, ['timestamp', 'y']]

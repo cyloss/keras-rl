@@ -33,8 +33,6 @@ ENV_NAME = 'Pendulum-v0'
 env = kagglegym.make()
 np.random.seed(123)
 env.seed(123)
-print(env.reset())
-#print(env.step(env.action_space.sample()))
 assert len(env.action_space.shape) == 1
 nb_actions = env.action_space.shape[0]
 
