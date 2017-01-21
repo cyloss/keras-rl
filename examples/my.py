@@ -11,6 +11,8 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, merge
 from keras.optimizers import Adam
 
+from keras.layers.core import Dropout  
+
 from rl.agents import ContinuousDQNAgent
 from rl.memory import SequentialMemory
 from rl.random import OrnsteinUhlenbeckProcess
@@ -41,27 +43,29 @@ nb_actions = env.action_space.shape[0]
 y_low = -0.075
 y_high = 0.075
 
+
+model.add(Dense(input_layer, input_dim=num_features, init='normal', activation='relu'))
+    model.add(Dropout(dropout))
+        model.add(Dense(32, init='normal', activation='relu'))
+
+
 # Build all necessary models: V, mu, and L networks.
 V_model = Sequential()
 V_model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-V_model.add(Dense(16))
-V_model.add(Activation('relu'))
-V_model.add(Dense(16))
-V_model.add(Activation('relu'))
-V_model.add(Dense(16))
-V_model.add(Activation('relu'))
+V_model.add(Dense(64, activation ='relu'))
+V_model.add(Dropout(0.2))
+V_model.add(Dense(32, activation ='relu'))
+V_model.add(Dropout(0.2))
 V_model.add(Dense(1))
 V_model.add(Activation('linear'))
 print(V_model.summary())
 
 mu_model = Sequential()
 mu_model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-mu_model.add(Dense(16))
-mu_model.add(Activation('relu'))
-mu_model.add(Dense(16))
-mu_model.add(Activation('relu'))
-mu_model.add(Dense(16))
-mu_model.add(Activation('relu'))
+mu_model.add(Dense(64, activation ='relu'))
+mu_model.add(Dropout(0.2))
+mu_model.add(Dense(32, activation ='relu'))
+mu_model.add(Dropout(0.2))
 mu_model.add(Dense(nb_actions))
 mu_model.add(Activation('linear'))
 print(mu_model.summary())
@@ -69,11 +73,11 @@ print(mu_model.summary())
 action_input = Input(shape=(nb_actions,), name='action_input')
 observation_input = Input(shape=(1,) + env.observation_space.shape, name='observation_input')
 x = merge([action_input, Flatten()(observation_input)], mode='concat')
-x = Dense(32)(x)
+x = Dense(64)(x)
 x = Activation('relu')(x)
 x = Dense(32)(x)
 x = Activation('relu')(x)
-x = Dense(32)(x)
+x = Dense(16)(x)
 x = Activation('relu')(x)
 x = Dense(((nb_actions * nb_actions + nb_actions) / 2))(x)
 x = Activation('linear')(x)
