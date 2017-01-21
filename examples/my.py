@@ -42,10 +42,6 @@ y_low = -0.075
 y_high = 0.075
 
 
-model.add(Dense(input_layer, input_dim=num_features, init='normal', activation='relu'))
-    model.add(Dropout(dropout))
-        model.add(Dense(32, init='normal', activation='relu'))
-
 
 # Build all necessary models: V, mu, and L networks.
 V_model = Sequential()
